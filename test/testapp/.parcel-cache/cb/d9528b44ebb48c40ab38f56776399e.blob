@@ -1,4 +1,0 @@
-var _testIndex = require('@test/index');
-var _testNestedIndex = require('@test/nested/index');
-console.log(_testIndex.greeting2);
-console.log(_testNestedIndex.greeting3);

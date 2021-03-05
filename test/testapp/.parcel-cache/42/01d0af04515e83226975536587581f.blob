@@ -1,1 +1,0 @@
-module.exports = require('./bundle-url').getBundleURL() + "pinata.HASH_REF_cc813a046d3960c1343cf79b524cfdb9.svg"

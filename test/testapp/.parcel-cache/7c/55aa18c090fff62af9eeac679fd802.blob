@@ -1,6 +1,0 @@
-var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
-_parcelHelpers.defineInteropFlag(exports);
-_parcelHelpers.export(exports, "greeting3", function () {
-  return greeting3;
-});
-const greeting3 = 'Hello World4';
