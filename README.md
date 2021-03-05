@@ -1,45 +1,36 @@
 # parcel-plugin-typescript-paths
 
-This plugin enabled parcel to be aware of typescript module paths (module aliasing).
 
-[![pipeline status](https://gitlab.com/boboben5/parcel-plugin-typescript-paths/badges/master/pipeline.svg)](https://gitlab.com/boboben5/parcel-plugin-typescript-paths/commits/master) [![CodeFactor](https://www.codefactor.io/repository/github/boboben1/parcel-plugin-typescript-paths/badge)](https://www.codefactor.io/repository/github/boboben1/parcel-plugin-typescript-paths) 
+Parcel does not make use of `tsconfig.json` to resolve path aliases, rather relying on `package.json` instead ([reference](https://v2.parceljs.org/features/module-resolution/#typescript-~-resolution)). This Parcel v2 plugin enables typescript path alias resolution as usual. 
+
+**This plugin is experimental until Parcel V2 is released.** Use in production with heavy caution.
 
 ## Installation
 
-`npm install --save-dev parcel-plugin-typescript-paths`
+`yarn add -D parcel-resolver-tspaths`
 
-## WARNING
+or
 
-This project is in heavy development and will change. Please don't use on production.
 
-Feel free to contribute.
+`npm install --save-dev parcel-resolver-tspaths`
+
+Now in your [.parcelrc](https://v2.parceljs.org/configuration/plugin-configuration/), drop in the plugin to your resolvers like so:
+
+```json
+"resolvers": [..., "parcel-resolver-tspaths"],
+```
+
+No need to configure filetypes.
 
 ## Known Limitations
 
-This plugin uses regular expressions to perform a search and replace in your code.  To avoid collisions, it is recommended to only use unique names as your paths.  For example, if you have the following in your tsconfig:
+- This plugin is not currently compatible with importing [non-code assets](https://v2.parceljs.org/getting-started/migration/#importing-non-code-assets-from-javascript), but this is being considered for future development. 
 
-```
-"paths": {
-    "upload": ["src/upload"],
-}
-```
+  For example:
 
-and you have the following content string in your code:
-
-```
-Students, import your work for review 
-by clicking the button "upload".
-```
-
-then "upload" will get replaced with "src/upload".
-
-The following would be a better configuration since "@upload" is probably less likely to be used as a content string in your app:
-
-```
-"paths": {
-    "@upload": ["src/upload"],
-}
-```
+  ```typescript
+  import logo from 'url:@myassets/image/logo.svg'
+  ```
 
 
 
