@@ -1,0 +1,10 @@
+var _test = require('@test/');
+var _testNestedIndex = require('@test/nested/index');
+var _testNestedPinata = require('@test/nested/pinata');
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+var _testNestedPinataDefault = _parcelHelpers.interopDefault(_testNestedPinata);
+console.log(_test.greeting2);
+console.log(_testNestedIndex.greeting3);
+document.getElementById('g1').innerHTML = _test.greeting2;
+document.getElementById('g2').innerHTML = _testNestedIndex.greeting3;
+document.getElementById('image')['src'] = _testNestedPinataDefault.default;

@@ -1,0 +1,4 @@
+var _test = require('@test/');
+var _testNestedIndexTs = require('@test/nested/index.ts');
+console.log(_test.greeting2);
+console.log(_testNestedIndexTs.greeting3);

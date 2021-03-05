@@ -1,0 +1,7 @@
+var _test = require('@test/');
+var _testNestedIndex = require('@test/nested/index');
+console.log(_test.greeting2);
+console.log(_testNestedIndex.greeting3);
+document.getElementById('g1').innerHTML = _test.greeting2;
+document.getElementById('g2').innerHTML = _testNestedIndex.greeting3;
+document.getElementById('image').innerHTML = _testNestedIndex.greeting3;

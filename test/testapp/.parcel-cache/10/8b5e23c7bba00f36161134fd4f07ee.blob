@@ -1,0 +1,6 @@
+var _test = require('@test/');
+var _testNestedIndexTs = require('@test/nested/index.ts');
+console.log(_test.greeting2);
+console.log(_testNestedIndexTs.greeting3);
+const body = document.querySelector('body');
+body.innerHTML = `${_test.greeting2}&nbsp;${_testNestedIndexTs.greeting3}`;
