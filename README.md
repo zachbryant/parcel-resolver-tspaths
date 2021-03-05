@@ -32,5 +32,16 @@ No need to configure filetypes.
   import logo from 'url:@myassets/image/logo.svg'
   ```
 
+- ## **Please file an issue if you notice any bugs. Thanks!**
 
+## Development
 
+Clone this repo anywhere, then run `yarn && yarn link` in the project root.
+
+In `test/testapp`, run `yarn && yarn link parcel-resolver-tspaths`. 
+
+You'll now want to open a second terminal window. In one, run `yarn dev` to start the typescript compiler in watch mode. 
+
+In the other run `yarn test` to start the parcel build. Changes to the plugin require reloading Parcel.
+
+If you run into issues viewing debug output, you can see all raw output by running `yarn test |& cat` (Mac/Linux users only).
