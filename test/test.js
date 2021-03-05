@@ -1,12 +1,12 @@
 const path = require('path');
-const Parcel = require("@parcel/core");
+const Parcel = require("parcel");
 //const typeScriptPathsPlugin = require( '../dist/index' );
 
 describe('test program', function() {
   it( 'Should compile the test program and run it without errors', async () => {
     this.timeout(30 * 1000)
     const bundler = new Parcel({
-      entries: path.join(__dirname, "testapp/src/index.ts"),
+      entries: path.join(__dirname, "testapp/src/index.html"),
       defaultConfig: require.resolve("@parcel/config-default"),
       defaultTargetOptions: {
         engines: {
@@ -21,5 +21,3 @@ describe('test program', function() {
     await bundler.bundle();
   });
 } );
-
-export { };
