@@ -1,7 +1,7 @@
 # parcel-plugin-typescript-paths
 
 
-Parcel does not make use of `tsconfig.json` to resolve path aliases, rather relying on `package.json` instead ([reference](https://v2.parceljs.org/features/module-resolution/#typescript-~-resolution)). This Parcel v2 plugin enables typescript path alias resolution as usual. 
+Parcel does not make use of `tsconfig.json` to resolve path aliases, and instead uses `package.json` ([reference](https://v2.parceljs.org/features/module-resolution/#typescript-~-resolution)). This Parcel v2 plugin enables typescript path alias resolution as you would normally expect with webpack or otherwise. As a bonus, intellisense will continue to provide suggestions from your tsconfig.
 
 **This plugin is experimental until Parcel V2 is released.** Use in production with heavy caution.
 
@@ -17,10 +17,10 @@ or
 Now in your [.parcelrc](https://v2.parceljs.org/configuration/plugin-configuration/), drop in the plugin to your resolvers like so:
 
 ```json
-"resolvers": [..., "parcel-resolver-tspaths"],
+"resolvers": ["parcel-resolver-tspaths"],
 ```
 
-No need to configure filetypes.
+No need to configure which filetypes to resolve (`.ts`/`.tsx` only).
 
 ## Known Limitations
 
