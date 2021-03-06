@@ -1,6 +1,6 @@
 {
   "name": "parcel-resolver-tspaths",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Adds support for tsconfig paths to Parcel.",
   "main": "dist/index.js",
   "author": "zachbryant",
@@ -14,7 +14,7 @@
     "build": "tsc",
     "dev": "tsc -w",
     "uglify": "uglifyjs dist/index.js dist/utils.js --compress --mangle -o dist/index.min.js",
-    "prepublish": "npm-run-all -s build"
+    "prepublishOnly": "npm-run-all -s build"
   },
   "repository": {
     "type": "git",
@@ -30,10 +30,10 @@
     "path"
   ],
   "engines": {
-    "parcel": "2.0.0-nightly.614"
+    "parcel": "2.0.0-nightly.618"
   },
   "peerDependencies": {
-    "parcel": "^2.0.0-nightly.614"
+    "parcel": "^2.0.0-nightly.618"
   },
   "dependencies": {},
   "bundledDependencies": [
@@ -41,8 +41,8 @@
   ],
   "devDependencies": {
     "@babel/core": "^7.13.8",
-    "@parcel/plugin": "^2.0.0-nightly.614",
-    "@parcel/utils": "^2.0.0-nightly.614",
+    "@parcel/plugin": "^2.0.0-nightly.618",
+    "@parcel/utils": "^2.0.0-nightly.618",
     "@types/node": "^14.14.31",
     "eslint": "^7.20.0",
     "mocha": "^8.3.0",
