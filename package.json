@@ -16,7 +16,8 @@
     "test": "mocha",
     "build": "tsc",
     "dev": "tsc -w",
-    "uglify": "uglifyjs dist/index.js dist/utils.js --compress --mangle -o dist/index.min.js"
+    "uglify": "uglifyjs dist/index.js dist/utils.js --compress --mangle -o dist/index.min.js",
+    "prepublishOnly": "npm-run-all -s build"
   },
   "repository": {
     "type": "git",
