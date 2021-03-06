@@ -1,7 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const path = require('path');
-const fs = require('fs');
 const plugin_1 = require("@parcel/plugin");
 const utils_1 = require("@parcel/utils");
 const utils_2 = require("./utils");
@@ -37,25 +35,25 @@ function attemptResolve(from, pathsMap, logger) {
 function attemptResolveArray(from, alias, realPaths) {
     for (let option of realPaths) {
         let unaliasedFrom = from.replace(utils_2.trimStar(alias), utils_2.trimStar(option));
-        let absolutePath = path.resolve(unaliasedFrom);
-        let fileExists = fs.existsSync(absolutePath);
+        let absolutePath = utils_2.path.resolve(unaliasedFrom);
+        let fileExists = utils_2.fs.existsSync(absolutePath);
         if (!fileExists) {
             // could be missing extension
-            const basename = path.basename(absolutePath);
-            const dirPath = path.dirname(absolutePath);
+            const basename = utils_2.path.basename(absolutePath);
+            const dirPath = utils_2.path.dirname(absolutePath);
             absolutePath = utils_2.findFileInDirectory(dirPath, basename);
             if (!absolutePath)
                 absolutePath = utils_2.findFileInDirectoryUnknownExt(dirPath, basename);
         }
-        fileExists = fs.existsSync(absolutePath);
+        fileExists = utils_2.fs.existsSync(absolutePath);
         if (fileExists) {
-            let stats = fs.statSync(absolutePath);
+            let stats = utils_2.fs.statSync(absolutePath);
             if (stats.isDirectory()) {
                 absolutePath = utils_2.findFileInDirectory(absolutePath);
                 if (!absolutePath)
                     continue; // try another option, don't terminate early
             }
-            return path.relative('.', absolutePath); // parcel expects path from the project root
+            return utils_2.path.relative('.', absolutePath); // parcel expects path from the project root
         }
     }
     return undefined;
@@ -77,10 +75,10 @@ async function loadTsPaths(resolveFrom, inputFS, logger) {
     for (let [key, value] of Object.entries(tsPathsObject)) {
         switch (value.constructor) {
             case String:
-                tsPathsMap[key] = `${baseUrl}${path.sep}${value}`;
+                tsPathsMap[key] = `${baseUrl}${utils_2.path.sep}${value}`;
                 break;
             case Array:
-                let paths = value.map((v) => `${baseUrl}${path.sep}${v}`);
+                let paths = value.map((v) => `${baseUrl}${utils_2.path.sep}${v}`);
                 tsPathsMap[key] = paths;
                 break;
             default:

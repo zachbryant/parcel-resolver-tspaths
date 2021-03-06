@@ -1,22 +1,26 @@
-const fs = require( 'fs' );
-const path = require( 'path' );
+export const fs = require('fs');
+export const path = require('path');
 
-export function findFileInDirectory( directory: string, filename: string = 'index', extensions: string[] = [ 'ts', 'js', 'tsx', 'jsx' ] ) {
-	for ( let ext of extensions ) {
-		let resolved = path.resolve( directory, `${filename}.${ ext }` );
-		if ( fs.existsSync( resolved ) ) {
+export function findFileInDirectory(
+	directory: string,
+	filename: string = 'index',
+	extensions: string[] = ['ts', 'js', 'tsx', 'jsx']
+) {
+	for (let ext of extensions) {
+		let resolved = path.resolve(directory, `${filename}.${ext}`);
+		if (fs.existsSync(resolved)) {
 			return resolved;
 		}
 	}
 	return undefined;
 }
 
-export function findFileInDirectoryUnknownExt( dirPath: string, basename: string ) {
+export function findFileInDirectoryUnknownExt(dirPath: string, basename: string) {
 	if (fs.existsSync(dirPath)) {
-		const files = fs.readdirSync( dirPath );
-		for ( let file of files ) {
-			console.log( `${path.basename( file, path.extname(file) )} === ${basename}` );
-			if ( path.basename( file, path.extname(file) ) === basename ) {
+		const files = fs.readdirSync(dirPath);
+		for (let file of files) {
+			console.log(`${path.basename(file, path.extname(file))} === ${basename}`);
+			if (path.basename(file, path.extname(file)) === basename) {
 				return path.resolve(dirPath, file);
 			}
 		}
@@ -35,17 +39,17 @@ export function checkWebpackSpecificImportSyntax(dependency) {
 	}
 }
 
-export function trimStar( str: string ) {
-	return trim( str, '*' );
+export function trimStar(str: string) {
+	return trim(str, '*');
 }
 
-export function trimSlash( str: string ) {
-	return trim( str, path.sep );
+export function trimSlash(str: string) {
+	return trim(str, path.sep);
 }
 
-export function trim( str: string, trim: string ) {
-	if ( str.endsWith( trim ) ) {
-		str = str.substring( 0, str.length - trim.length );
+export function trim(str: string, trim: string) {
+	if (str.endsWith(trim)) {
+		str = str.substring(0, str.length - trim.length);
 	}
 	return str;
 }

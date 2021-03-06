@@ -1,11 +1,8 @@
-const path = require('path');
-const fs = require('fs');
-
 import { Resolver } from '@parcel/plugin';
 import { loadConfig } from '@parcel/utils';
 
 import {
-    checkWebpackSpecificImportSyntax, findFileInDirectory, findFileInDirectoryUnknownExt, trimSlash,
+    checkWebpackSpecificImportSyntax, findFileInDirectory, findFileInDirectoryUnknownExt, fs, path,
     trimStar
 } from './utils';
 

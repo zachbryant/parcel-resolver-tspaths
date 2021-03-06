@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.trim = exports.trimSlash = exports.trimStar = exports.checkWebpackSpecificImportSyntax = exports.findFileInDirectoryUnknownExt = exports.findFileInDirectory = void 0;
-const fs = require('fs');
-const path = require('path');
+exports.trim = exports.trimSlash = exports.trimStar = exports.checkWebpackSpecificImportSyntax = exports.findFileInDirectoryUnknownExt = exports.findFileInDirectory = exports.path = exports.fs = void 0;
+exports.fs = require('fs');
+exports.path = require('path');
 function findFileInDirectory(directory, filename = 'index', extensions = ['ts', 'js', 'tsx', 'jsx']) {
     for (let ext of extensions) {
-        let resolved = path.resolve(directory, `${filename}.${ext}`);
-        if (fs.existsSync(resolved)) {
+        let resolved = exports.path.resolve(directory, `${filename}.${ext}`);
+        if (exports.fs.existsSync(resolved)) {
             return resolved;
         }
     }
@@ -14,12 +14,12 @@ function findFileInDirectory(directory, filename = 'index', extensions = ['ts', 
 }
 exports.findFileInDirectory = findFileInDirectory;
 function findFileInDirectoryUnknownExt(dirPath, basename) {
-    if (fs.existsSync(dirPath)) {
-        const files = fs.readdirSync(dirPath);
+    if (exports.fs.existsSync(dirPath)) {
+        const files = exports.fs.readdirSync(dirPath);
         for (let file of files) {
-            console.log(`${path.basename(file, path.extname(file))} === ${basename}`);
-            if (path.basename(file, path.extname(file)) === basename) {
-                return path.resolve(dirPath, file);
+            console.log(`${exports.path.basename(file, exports.path.extname(file))} === ${basename}`);
+            if (exports.path.basename(file, exports.path.extname(file)) === basename) {
+                return exports.path.resolve(dirPath, file);
             }
         }
     }
@@ -40,7 +40,7 @@ function trimStar(str) {
 }
 exports.trimStar = trimStar;
 function trimSlash(str) {
-    return trim(str, path.sep);
+    return trim(str, exports.path.sep);
 }
 exports.trimSlash = trimSlash;
 function trim(str, trim) {
