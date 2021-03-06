@@ -9,6 +9,9 @@
     "url": "https://github.com/zachbryant/parcel-resolver-tspaths/issues"
   },
   "homepage": "https://github.com/zachbryant/parcel-resolver-tspaths#readme",
+  "publishConfig": {
+    "registry":"https://npm.pkg.github.com"
+  },
   "scripts": {
     "test": "mocha",
     "build": "tsc",
