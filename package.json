@@ -15,9 +15,9 @@
   "scripts": {
     "test": "mocha",
     "clean": "rm -rf node_modules/ test/testapp/node_modules test/testapp/.parcel-cache",
-    "build": "tsc",
+    "build": "tsc && npm run minify",
     "dev": "tsc -w",
-    "minify": "terser --compress --mangle --comments false -o dist/index.min.js -- dist/*",
+    "minify": "terser --compress --mangle --comments false -o dist/index.min.js -- dist/index.js dist/utils.js",
     "prepublishOnly": "npm-run-all -s build"
   },
   "repository": {
