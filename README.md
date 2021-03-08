@@ -1,4 +1,4 @@
-# parcel-plugin-typescript-paths
+# parcel-resolver-tspaths
 
 
 Parcel does not make use of `tsconfig.json` to resolve path aliases, and instead uses `package.json` ([reference](https://v2.parceljs.org/features/module-resolution/#typescript-~-resolution)). This Parcel v2 plugin enables typescript path alias resolution as you would normally expect with webpack or otherwise. As a bonus, intellisense will continue to provide suggestions from your tsconfig.
@@ -14,7 +14,7 @@ or
 
 `npm install --save-dev parcel-resolver-tspaths`
 
-Now in your [.parcelrc](https://v2.parceljs.org/configuration/plugin-configuration/), drop in the plugin to your resolvers like so:
+Now if you have a [.parcelrc](https://v2.parceljs.org/configuration/plugin-configuration/) (skip if you don't), drop in the plugin to your resolvers like so:
 
 ```json
 "resolvers": ["parcel-resolver-tspaths"],
@@ -38,10 +38,8 @@ No need to configure which filetypes to resolve (`.ts`/`.tsx` only).
 
 Clone this repo anywhere, then run `yarn && yarn link` in the project root.
 
-In `test/testapp`, run `yarn && yarn link parcel-resolver-tspaths`. 
+In `test/testapp`, run `yarn && yarn link parcel-resolver-tspaths`. Run `yarn dev` to start the typscript compiler in watch mode.
 
-You'll now want to open a second terminal window. In one, run `yarn dev` to start the typescript compiler in watch mode. 
-
-In the other run `yarn test` to start the parcel build. Changes to the plugin require reloading Parcel.
+Test app WIP.
 
 If you run into issues viewing debug output, you can see all raw output by running `yarn test |& cat` (Mac/Linux users only).
