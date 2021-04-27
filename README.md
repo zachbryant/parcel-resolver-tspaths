@@ -4,7 +4,7 @@ Parcel does not make use of `tsconfig.json` to resolve path aliases, and instead
 
 **This plugin is experimental until Parcel V2 is released.** Use in production with heavy caution.
 
-## Installation (~3.1kB)
+## Installation (~3.1kB, 0 dependencies)
 
 - `yarn add -D parcel-resolver-tspaths`
 
