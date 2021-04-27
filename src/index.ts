@@ -1,10 +1,8 @@
 import { Resolver } from '@parcel/plugin';
 import { loadConfig } from '@parcel/utils';
 
-import {
-    checkWebpackSpecificImportSyntax, findFileInDirectory, findFileInDirectoryUnknownExt, fs, path,
-    trimStar
-} from './utils';
+export const fs = require('fs');
+export const path = require('path');
 
 type PathMapType = Map<string, string | Array<string>>;
 
@@ -12,10 +10,13 @@ export default new Resolver({
 	async resolve({ filePath, dependency, options, logger }) {
 		checkWebpackSpecificImportSyntax(dependency);
 		let resolveFrom = dependency.resolveFrom;
-		const isTypescript = resolveFrom?.match(/\.tsx?$/g);
-		if (!isTypescript) return null;
 
-		logger.verbose({ message: `Resolving Typescript file: ${resolveFrom}` });
+		const isTypescript = resolveFrom?.match(/\.tsx?$/g);
+		if (!isTypescript) {
+			return null;
+		}
+
+		logger.verbose({ message: `Resolving ${resolveFrom}` });
 		const pathsMap: PathMapType = await load(resolveFrom, options.inputFS, logger);
 		return {
 			filePath: attemptResolve(filePath, pathsMap, logger),
@@ -74,7 +75,7 @@ function attemptResolveArray(from: string, alias: string, realPaths: Array<strin
 async function load(resolveFrom: string, inputFS, logger): Promise<PathMapType> {
 	let result: PathMapType = await loadTsPaths(resolveFrom, inputFS, logger);
 	// TODO automatic tspath generation
-	logger.verbose({ message: `Typescript paths loaded: ${JSON.stringify(result)}` });
+	logger.verbose({ message: `paths loaded: ${JSON.stringify(result)}` });
 	return result;
 }
 
@@ -104,4 +105,60 @@ async function loadTsPaths(resolveFrom: string, inputFS, logger): Promise<PathMa
 	}
 
 	return tsPathsMap;
+}
+
+////////////////
+/** Utilities */
+////////////////
+export function findFileInDirectory(
+	directory: string,
+	filename: string = 'index',
+	extensions: string[] = ['ts', 'js', 'tsx', 'jsx']
+) {
+	for (let ext of extensions) {
+		let resolved = path.resolve(directory, `${filename}.${ext}`);
+		if (fs.existsSync(resolved)) {
+			return resolved;
+		}
+	}
+	return undefined;
+}
+
+export function findFileInDirectoryUnknownExt(dirPath: string, basename: string) {
+	if (fs.existsSync(dirPath)) {
+		const files = fs.readdirSync(dirPath);
+		for (let file of files) {
+			console.log(`${path.basename(file, path.extname(file))} === ${basename}`);
+			if (path.basename(file, path.extname(file)) === basename) {
+				return path.resolve(dirPath, file);
+			}
+		}
+	}
+	return undefined;
+}
+
+export function checkWebpackSpecificImportSyntax(dependency) {
+	// Throw user friendly errors on special webpack loader syntax
+	// ex. `imports-loader?$=jquery!./example.js`
+	const WEBPACK_IMPORT_REGEX = /\S+-loader\S*!\S+/g;
+	if (WEBPACK_IMPORT_REGEX.test(dependency.moduleSpecifier)) {
+		throw new Error(
+			`The import path: ${dependency.moduleSpecifier} is using webpack specific loader import syntax, which isn't supported by Parcel.`
+		);
+	}
+}
+
+export function trimStar(str: string) {
+	return trim(str, '*');
+}
+
+export function trimSlash(str: string) {
+	return trim(str, path.sep);
+}
+
+export function trim(str: string, trim: string) {
+	if (str.endsWith(trim)) {
+		str = str.substring(0, str.length - trim.length);
+	}
+	return str;
 }

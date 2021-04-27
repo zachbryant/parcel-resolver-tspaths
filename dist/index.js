@@ -1,16 +1,19 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.trim = exports.trimSlash = exports.trimStar = exports.checkWebpackSpecificImportSyntax = exports.findFileInDirectoryUnknownExt = exports.findFileInDirectory = exports.path = exports.fs = void 0;
 const plugin_1 = require("@parcel/plugin");
 const utils_1 = require("@parcel/utils");
-const utils_2 = require("./utils");
+exports.fs = require('fs');
+exports.path = require('path');
 exports.default = new plugin_1.Resolver({
     async resolve({ filePath, dependency, options, logger }) {
-        utils_2.checkWebpackSpecificImportSyntax(dependency);
+        checkWebpackSpecificImportSyntax(dependency);
         let resolveFrom = dependency.resolveFrom;
         const isTypescript = resolveFrom?.match(/\.tsx?$/g);
-        if (!isTypescript)
+        if (!isTypescript) {
             return null;
-        logger.verbose({ message: `Resolving Typescript file: ${resolveFrom}` });
+        }
+        logger.verbose({ message: `Resolving ${resolveFrom}` });
         const pathsMap = await load(resolveFrom, options.inputFS, logger);
         return {
             filePath: attemptResolve(filePath, pathsMap, logger),
@@ -38,26 +41,26 @@ function attemptResolve(from, pathsMap, logger) {
 /** Attempt to resolve any path associated with the alias to a file or directory index */
 function attemptResolveArray(from, alias, realPaths) {
     for (let option of realPaths) {
-        let unaliasedFrom = from.replace(utils_2.trimStar(alias), utils_2.trimStar(option));
-        let absolutePath = utils_2.path.resolve(unaliasedFrom);
-        let fileExists = utils_2.fs.existsSync(absolutePath);
+        let unaliasedFrom = from.replace(trimStar(alias), trimStar(option));
+        let absolutePath = exports.path.resolve(unaliasedFrom);
+        let fileExists = exports.fs.existsSync(absolutePath);
         if (!fileExists) {
             // could be missing extension
-            const basename = utils_2.path.basename(absolutePath);
-            const dirPath = utils_2.path.dirname(absolutePath);
-            absolutePath = utils_2.findFileInDirectory(dirPath, basename);
+            const basename = exports.path.basename(absolutePath);
+            const dirPath = exports.path.dirname(absolutePath);
+            absolutePath = findFileInDirectory(dirPath, basename);
             if (!absolutePath)
-                absolutePath = utils_2.findFileInDirectoryUnknownExt(dirPath, basename);
+                absolutePath = findFileInDirectoryUnknownExt(dirPath, basename);
         }
-        fileExists = utils_2.fs.existsSync(absolutePath);
+        fileExists = exports.fs.existsSync(absolutePath);
         if (fileExists) {
-            let stats = utils_2.fs.statSync(absolutePath);
+            let stats = exports.fs.statSync(absolutePath);
             if (stats.isDirectory()) {
-                absolutePath = utils_2.findFileInDirectory(absolutePath);
+                absolutePath = findFileInDirectory(absolutePath);
                 if (!absolutePath)
                     continue; // try another option, don't terminate early
             }
-            return utils_2.path.relative('.', absolutePath); // parcel expects path from the project root
+            return exports.path.relative('.', absolutePath); // parcel expects path from the project root
         }
     }
     return null;
@@ -65,7 +68,7 @@ function attemptResolveArray(from, alias, realPaths) {
 async function load(resolveFrom, inputFS, logger) {
     let result = await loadTsPaths(resolveFrom, inputFS, logger);
     // TODO automatic tspath generation
-    logger.verbose({ message: `Typescript paths loaded: ${JSON.stringify(result)}` });
+    logger.verbose({ message: `paths loaded: ${JSON.stringify(result)}` });
     return result;
 }
 /** Populate a map with any paths from tsconfig.json starting from baseUrl */
@@ -79,10 +82,10 @@ async function loadTsPaths(resolveFrom, inputFS, logger) {
     for (let [key, value] of Object.entries(tsPathsObject)) {
         switch (value.constructor) {
             case String:
-                tsPathsMap[key] = `${baseUrl}${utils_2.path.sep}${value}`;
+                tsPathsMap[key] = `${baseUrl}${exports.path.sep}${value}`;
                 break;
             case Array:
-                let paths = value.map((v) => `${baseUrl}${utils_2.path.sep}${v}`);
+                let paths = value.map((v) => `${baseUrl}${exports.path.sep}${v}`);
                 tsPathsMap[key] = paths;
                 break;
             default:
@@ -91,3 +94,53 @@ async function loadTsPaths(resolveFrom, inputFS, logger) {
     }
     return tsPathsMap;
 }
+////////////////
+/** Utilities */
+////////////////
+function findFileInDirectory(directory, filename = 'index', extensions = ['ts', 'js', 'tsx', 'jsx']) {
+    for (let ext of extensions) {
+        let resolved = exports.path.resolve(directory, `${filename}.${ext}`);
+        if (exports.fs.existsSync(resolved)) {
+            return resolved;
+        }
+    }
+    return undefined;
+}
+exports.findFileInDirectory = findFileInDirectory;
+function findFileInDirectoryUnknownExt(dirPath, basename) {
+    if (exports.fs.existsSync(dirPath)) {
+        const files = exports.fs.readdirSync(dirPath);
+        for (let file of files) {
+            console.log(`${exports.path.basename(file, exports.path.extname(file))} === ${basename}`);
+            if (exports.path.basename(file, exports.path.extname(file)) === basename) {
+                return exports.path.resolve(dirPath, file);
+            }
+        }
+    }
+    return undefined;
+}
+exports.findFileInDirectoryUnknownExt = findFileInDirectoryUnknownExt;
+function checkWebpackSpecificImportSyntax(dependency) {
+    // Throw user friendly errors on special webpack loader syntax
+    // ex. `imports-loader?$=jquery!./example.js`
+    const WEBPACK_IMPORT_REGEX = /\S+-loader\S*!\S+/g;
+    if (WEBPACK_IMPORT_REGEX.test(dependency.moduleSpecifier)) {
+        throw new Error(`The import path: ${dependency.moduleSpecifier} is using webpack specific loader import syntax, which isn't supported by Parcel.`);
+    }
+}
+exports.checkWebpackSpecificImportSyntax = checkWebpackSpecificImportSyntax;
+function trimStar(str) {
+    return trim(str, '*');
+}
+exports.trimStar = trimStar;
+function trimSlash(str) {
+    return trim(str, exports.path.sep);
+}
+exports.trimSlash = trimSlash;
+function trim(str, trim) {
+    if (str.endsWith(trim)) {
+        str = str.substring(0, str.length - trim.length);
+    }
+    return str;
+}
+exports.trim = trim;
