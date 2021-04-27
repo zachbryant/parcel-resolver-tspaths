@@ -31,7 +31,7 @@ And that's it.
 
 ## Caveats
 
-- The plugin may not be loaded if your parcel versions do not all match up with what's currently required in this plugin.
+- The plugin may not be loaded if your parcel versions do not all match up with what's currently required in this plugin (and thus fail to build).
 
 - This plugin does not support Typescript aliases while importing [non-code assets](https://v2.parceljs.org/getting-started/migration/#importing-non-code-assets-from-javascript), but this is being considered for future development.
 
