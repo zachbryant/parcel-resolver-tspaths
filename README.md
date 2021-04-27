@@ -21,7 +21,7 @@ In your [.parcelrc](https://v2.parceljs.org/configuration/plugin-configuration/)
 "resolvers": ["...", "parcel-resolver-tspaths"],
 ```
 
-No need to configure which filetypes to resolve (`.ts`/`.tsx` only).
+And that's it.
 
 ## Known Limitations
 
