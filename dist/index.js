@@ -10,6 +10,7 @@ exports.default = new plugin_1.Resolver({
         const isTypescript = resolveFrom?.match(/\.tsx?$/g);
         if (!isTypescript)
             return null;
+        logger.verbose({ message: `Resolving Typescript file: ${resolveFrom}` });
         const pathsMap = await load(resolveFrom, options.inputFS, logger);
         return {
             filePath: attemptResolve(filePath, pathsMap, logger),
