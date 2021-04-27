@@ -16,7 +16,6 @@
     "test": "mocha",
     "clean": "rm -rf node_modules/ test/testapp/node_modules test/testapp/.parcel-cache",
     "build": "tsc && npm run minify",
-    "dev": "tsc -w",
     "minify": "terser --compress --mangle --comments false -o dist/index.min.js -- dist/index.js dist/utils.js",
     "prepublishOnly": "npm-run-all -s build"
   },
@@ -34,11 +33,11 @@
     "path"
   ],
   "engines": {
-    "parcel": "2.0.0-nightly.618",
+    "parcel": "2.0.0-beta.2",
     "node": "14.x"
   },
   "peerDependencies": {
-    "parcel": "^2.0.0-nightly.618"
+    "parcel": "^2.0.0-beta.2"
   },
   "dependencies": {},
   "bundledDependencies": [
@@ -46,8 +45,8 @@
   ],
   "devDependencies": {
     "@babel/core": "^7.13.8",
-    "@parcel/plugin": "^2.0.0-nightly.618",
-    "@parcel/utils": "^2.0.0-nightly.618",
+    "@parcel/plugin": "^2.0.0-beta.2",
+    "@parcel/utils": "^2.0.0-beta.2",
     "@types/node": "^14.14.31",
     "eslint": "^7.20.0",
     "mocha": "^8.3.0",
