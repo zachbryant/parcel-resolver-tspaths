@@ -6,24 +6,32 @@ Parcel does not make use of `tsconfig.json` to resolve path aliases, and instead
 
 ## Installation (~3.1kB)
 
-`yarn add -D parcel-resolver-tspaths`
+- `yarn add -D parcel-resolver-tspaths`
 
-or
+  or
 
-`npm install --save-dev parcel-resolver-tspaths`
+  `npm install --save-dev parcel-resolver-tspaths`
 
-### Don't forget‼️
+- Ensure all parcel packages are set to version `^2.0.0-beta.2` and that Parcel is configured for Typescript.
 
-In your [.parcelrc](https://v2.parceljs.org/configuration/plugin-configuration/), be sure to properly [extend the default config](https://v2.parceljs.org/configuration/plugin-configuration/#extending-configs) and add the plugin to your resolvers like so:
+- In your [.parcelrc](https://v2.parceljs.org/configuration/plugin-configuration/), be sure to properly [extend the default config](https://v2.parceljs.org/configuration/plugin-configuration/#extending-configs) and add the plugin to your resolvers like so:
 
-```json
-"extends": "@parcel/config-default",
-"resolvers": ["...", "parcel-resolver-tspaths"],
-```
+  ```json
+  "extends": "@parcel/config-default",
+  "resolvers": ["...", "parcel-resolver-tspaths"],
+  "transformers": {
+    "*.{ts,tsx}": ["@parcel/transformer-typescript-tsc"]
+  },
+  "validators": {
+    "*.{ts,tsx}": ["@parcel/validator-typescript"]
+  },
+  ```
 
 And that's it.
 
-## Known Limitations
+## Caveats
+
+- The plugin may not be loaded if your parcel versions do not all match up with what's currently required in this plugin.
 
 - This plugin does not support Typescript aliases while importing [non-code assets](https://v2.parceljs.org/getting-started/migration/#importing-non-code-assets-from-javascript), but this is being considered for future development.
 
