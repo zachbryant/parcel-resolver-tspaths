@@ -25,7 +25,7 @@ And that's it.
 
 ## Known Limitations
 
-- This plugin is not currently compatible with importing [non-code assets](https://v2.parceljs.org/getting-started/migration/#importing-non-code-assets-from-javascript), but this is being considered for future development.
+- This plugin does not support Typescript aliases while importing [non-code assets](https://v2.parceljs.org/getting-started/migration/#importing-non-code-assets-from-javascript), but this is being considered for future development.
 
   For example:
 
