@@ -1,7 +1,7 @@
 {
   "name": "parcel-resolver-tspaths",
-  "version": "0.0.3",
-  "description": "Adds support for tsconfig paths to Parcel.",
+  "version": "0.0.4",
+  "description": "Supports tsconfig paths in Parcelv2.",
   "main": "dist/min/index.min.js",
   "files": [
     "dist/min/"
