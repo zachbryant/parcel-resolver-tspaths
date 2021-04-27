@@ -1,0 +1,24 @@
+{
+  "name": "testapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "parcel src/index.html --log-level verbose --no-cache",
+    "v": "parcel --version"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.13.8",
+    "@parcel/optimizer-htmlnano": "^2.0.0-beta.2",
+    "@parcel/packager-html": "^2.0.0-beta.2",
+    "@parcel/transformer-html": "^2.0.0-beta.2",
+    "@parcel/transformer-posthtml": "^2.0.0-beta.2",
+    "@parcel/transformer-typescript-tsc": "^2.0.0-beta.2",
+    "@parcel/validator-typescript": "^2.0.0-beta.2",
+    "parcel": "^2.0.0-beta.2",
+    "parcel-resolver-tspaths": "^0.0.2",
+    "typescript": "^3.0.0"
+  }
+}
