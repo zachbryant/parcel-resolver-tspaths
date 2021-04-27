@@ -11,10 +11,14 @@ type PathMapType = Map<string, string | Array<string>>;
 export default new Resolver({
 	async resolve({ filePath, dependency, options, logger }) {
 		checkWebpackSpecificImportSyntax(dependency);
-		const pathsMap: PathMapType = await load(dependency.resolveFrom, options.inputFS, logger);
-		const isTypescript = dependency.resolveFrom.match(/\.tsx?$/g);
+		let resolveFrom = dependency.resolveFrom;
+		const isTypescript = resolveFrom?.match(/\.tsx?$/g);
+		if (!isTypescript) return null;
+
+		logger.verbose({ message: `Resolving Typescript file: ${resolveFrom}` });
+		const pathsMap: PathMapType = await load(resolveFrom, options.inputFS, logger);
 		return {
-			filePath: isTypescript ? attemptResolve(filePath, pathsMap, logger) : undefined,
+			filePath: attemptResolve(filePath, pathsMap, logger),
 		};
 	},
 });
@@ -35,7 +39,7 @@ function attemptResolve(from: string, pathsMap: PathMapType, logger) {
 		}
 	}
 
-	return undefined;
+	return null;
 }
 
 // TODO support resource loaders like 'url:@alias/my.svg'
@@ -64,7 +68,7 @@ function attemptResolveArray(from: string, alias: string, realPaths: Array<strin
 			return path.relative('.', absolutePath); // parcel expects path from the project root
 		}
 	}
-	return undefined;
+	return null;
 }
 
 async function load(resolveFrom: string, inputFS, logger): Promise<PathMapType> {

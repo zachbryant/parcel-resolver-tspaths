@@ -6,10 +6,13 @@ const utils_2 = require("./utils");
 exports.default = new plugin_1.Resolver({
     async resolve({ filePath, dependency, options, logger }) {
         utils_2.checkWebpackSpecificImportSyntax(dependency);
-        const pathsMap = await load(dependency.resolveFrom, options.inputFS, logger);
-        const isTypescript = dependency.resolveFrom.match(/\.tsx?$/g);
+        let resolveFrom = dependency.resolveFrom;
+        const isTypescript = resolveFrom?.match(/\.tsx?$/g);
+        if (!isTypescript)
+            return null;
+        const pathsMap = await load(resolveFrom, options.inputFS, logger);
         return {
-            filePath: isTypescript ? attemptResolve(filePath, pathsMap, logger) : undefined,
+            filePath: attemptResolve(filePath, pathsMap, logger),
         };
     },
 });
@@ -28,7 +31,7 @@ function attemptResolve(from, pathsMap, logger) {
             }
         }
     }
-    return undefined;
+    return null;
 }
 // TODO support resource loaders like 'url:@alias/my.svg'
 /** Attempt to resolve any path associated with the alias to a file or directory index */
@@ -56,7 +59,7 @@ function attemptResolveArray(from, alias, realPaths) {
             return utils_2.path.relative('.', absolutePath); // parcel expects path from the project root
         }
     }
-    return undefined;
+    return null;
 }
 async function load(resolveFrom, inputFS, logger) {
     let result = await loadTsPaths(resolveFrom, inputFS, logger);
