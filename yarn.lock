@@ -279,7 +279,7 @@
   dependencies:
     chalk "^4.1.0"
 
-"@parcel/plugin@^2.0.0-beta.3.1":
+"@parcel/plugin@^2.0.0-beta.2":
   version "2.0.0-nightly.688"
   resolved "https://registry.yarnpkg.com/@parcel/plugin/-/plugin-2.0.0-nightly.688.tgz#10b23877762afd19ca1e32f24a4505228dd8742d"
   integrity sha512-EVIyL+c2rpxP2k3VyG19rttyYchgNSeFyNJw9W2g53N7wi40oYb+IW6UQpBLS9GsuhIBQpp2FwrTzXxqOtUd5Q==
@@ -299,7 +299,7 @@
   resolved "https://registry.yarnpkg.com/@parcel/types/-/types-2.0.0-nightly.688.tgz#29cb3fea2c458f503360dc60d108a3c0cf71cbf6"
   integrity sha512-243BwQXP3CUr9ejImjjdg6OQCYxx1BrYwOi6AiDHRl4gHYmF8csWuf9lUg75Zg3WW3V18FQM1BJQz4ELBTc+OA==
 
-"@parcel/utils@^2.0.0-beta.3.1":
+"@parcel/utils@^2.0.0-beta.2":
   version "2.0.0-nightly.688"
   resolved "https://registry.yarnpkg.com/@parcel/utils/-/utils-2.0.0-nightly.688.tgz#2b47bd5f2cf79ea7ae9c9335938254706724936a"
   integrity sha512-TyuYZZtYP7ggkKICcqKKp82Hit5NrGFQ0iiSRJg7mwLCOezu1PCsXb6usWVapfcPQyFz8xHYqRQXYDRsGsFEQQ==

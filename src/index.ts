@@ -17,7 +17,7 @@ export default new Resolver({
 		}
 
 		logger.verbose({ message: `Resolving ${resolveFrom}` });
-		const pathsMap: PathMapType = await load(resolveFrom, options.inputFS, logger);
+		const pathsMap: PathMapType = await load(resolveFrom, options, logger);
 		return {
 			filePath: attemptResolve(filePath, pathsMap, logger),
 		};
@@ -72,16 +72,24 @@ function attemptResolveArray(from: string, alias: string, realPaths: Array<strin
 	return null;
 }
 
-async function load(resolveFrom: string, inputFS, logger): Promise<PathMapType> {
-	let result: PathMapType = await loadTsPaths(resolveFrom, inputFS, logger);
+async function load(resolveFrom: string, options, logger): Promise<PathMapType> {
+	let result: PathMapType = await loadTsPaths(resolveFrom, options, logger);
 	// TODO automatic tspath generation
 	logger.verbose({ message: `paths loaded: ${JSON.stringify(result)}` });
 	return result;
 }
 
 /** Populate a map with any paths from tsconfig.json starting from baseUrl */
-async function loadTsPaths(resolveFrom: string, inputFS, logger): Promise<PathMapType> {
-	let result = await loadConfig(inputFS, resolveFrom, ['tsconfig.json']);
+async function loadTsPaths(resolveFrom: string, options, logger): Promise<PathMapType> {
+	let result = await loadConfig(
+		options.inputFS,
+		resolveFrom,
+		['tsconfig.json'],
+		options.projectRoot
+	);
+	if (!result?.config) {
+		throw new Error(`Missing or invalid tsconfig.json in project root (${options.projectRoot})`);
+	}
 	let config = result.config;
 
 	let baseUrl = config['baseUrl'] ?? 'src';
@@ -128,7 +136,6 @@ export function findFileInDirectoryUnknownExt(dirPath: string, basename: string)
 	if (fs.existsSync(dirPath)) {
 		const files = fs.readdirSync(dirPath);
 		for (let file of files) {
-			console.log(`${path.basename(file, path.extname(file))} === ${basename}`);
 			if (path.basename(file, path.extname(file)) === basename) {
 				return path.resolve(dirPath, file);
 			}

@@ -14,7 +14,7 @@ exports.default = new plugin_1.Resolver({
             return null;
         }
         logger.verbose({ message: `Resolving ${resolveFrom}` });
-        const pathsMap = await load(resolveFrom, options.inputFS, logger);
+        const pathsMap = await load(resolveFrom, options, logger);
         return {
             filePath: attemptResolve(filePath, pathsMap, logger),
         };
@@ -65,15 +65,18 @@ function attemptResolveArray(from, alias, realPaths) {
     }
     return null;
 }
-async function load(resolveFrom, inputFS, logger) {
-    let result = await loadTsPaths(resolveFrom, inputFS, logger);
+async function load(resolveFrom, options, logger) {
+    let result = await loadTsPaths(resolveFrom, options, logger);
     // TODO automatic tspath generation
     logger.verbose({ message: `paths loaded: ${JSON.stringify(result)}` });
     return result;
 }
 /** Populate a map with any paths from tsconfig.json starting from baseUrl */
-async function loadTsPaths(resolveFrom, inputFS, logger) {
-    let result = await utils_1.loadConfig(inputFS, resolveFrom, ['tsconfig.json']);
+async function loadTsPaths(resolveFrom, options, logger) {
+    let result = await utils_1.loadConfig(options.inputFS, resolveFrom, ['tsconfig.json'], options.projectRoot);
+    if (!result?.config) {
+        throw new Error(`Missing or invalid tsconfig.json in project root (${options.projectRoot})`);
+    }
     let config = result.config;
     let baseUrl = config['baseUrl'] ?? 'src';
     let tsPathsObject = config?.['compilerOptions']?.['paths'] ?? {};
@@ -111,7 +114,6 @@ function findFileInDirectoryUnknownExt(dirPath, basename) {
     if (exports.fs.existsSync(dirPath)) {
         const files = exports.fs.readdirSync(dirPath);
         for (let file of files) {
-            console.log(`${exports.path.basename(file, exports.path.extname(file))} === ${basename}`);
             if (exports.path.basename(file, exports.path.extname(file)) === basename) {
                 return exports.path.resolve(dirPath, file);
             }
