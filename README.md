@@ -47,6 +47,6 @@ And that's it. **Note:** the order of resolvers is sequential, and I highly reco
 
 Clone this repo anywhere, then run `yarn && yarn link` in the project root.
 
-In `test/testapp`, run `yarn && yarn link parcel-resolver-tspaths`. Run `yarn build` to generate a new `index.min.js`. Dev watcher coming soon.
+In any parcel app, run `yarn && yarn link parcel-resolver-tspaths`. Then follow normal build procedures. Real tests coming soon.
 
 If you run into issues viewing debug output, you can see all raw output by running `yarn test |& cat` (Mac/Linux users only).
