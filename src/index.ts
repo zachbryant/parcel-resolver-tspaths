@@ -18,8 +18,10 @@ export default new Resolver({
 
 		logger.verbose({ message: `Resolving ${resolveFrom}` });
 		const pathsMap: PathMapType = await load(resolveFrom, options, logger);
+		const result = attemptResolve(filePath, pathsMap, logger);
+		logger.verbose({ message: `Result: ${result}` });
 		return {
-			filePath: attemptResolve(filePath, pathsMap, logger),
+			filePath: result,
 		};
 	},
 });
