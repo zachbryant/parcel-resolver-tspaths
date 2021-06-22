@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "update for beta 3.1, support >= beta.2",
-  "packageName": "parcel-resolver-tspaths",
-  "email": "zdb282@gmail.com",
-  "dependentChangeType": "patch"
-}
