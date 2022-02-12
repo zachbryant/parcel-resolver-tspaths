@@ -7,7 +7,7 @@ export const path = require('path');
 type PathMapType = Map<string, string | Array<string>>;
 
 export default new Resolver({
-	async resolve({ filePath, dependency, options, logger }) {
+	async resolve({ specifier: filePath, dependency, options, logger }) {
 		checkWebpackSpecificImportSyntax(dependency);
 		let resolveFrom = dependency.resolveFrom;
 
@@ -21,7 +21,7 @@ export default new Resolver({
 		const result = attemptResolve(filePath, pathsMap, logger);
 		logger.verbose({ message: `Result: ${result}` });
 		return {
-			filePath: result,
+			filePath: path.join(__dirname, '../../../../', result),
 		};
 	},
 });

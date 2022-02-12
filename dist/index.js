@@ -6,7 +6,7 @@ const utils_1 = require("@parcel/utils");
 exports.fs = require('fs');
 exports.path = require('path');
 exports.default = new plugin_1.Resolver({
-    async resolve({ filePath, dependency, options, logger }) {
+    async resolve({ specifier: filePath, dependency, options, logger }) {
         checkWebpackSpecificImportSyntax(dependency);
         let resolveFrom = dependency.resolveFrom;
         const isTypescript = resolveFrom?.match(/\.tsx?$/g);
@@ -18,7 +18,7 @@ exports.default = new plugin_1.Resolver({
         const result = attemptResolve(filePath, pathsMap, logger);
         logger.verbose({ message: `Result: ${result}` });
         return {
-            filePath: result,
+            filePath: exports.path.join(__dirname, '../../../../', result),
         };
     },
 });
