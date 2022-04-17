@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "absolute path fix; parcel 2 support",
+  "packageName": "parcel-resolver-tspaths",
+  "email": "zdb282@gmail.com",
+  "dependentChangeType": "patch"
+}

@@ -69,7 +69,6 @@ function attemptResolveArray(from: string, alias: string, realPaths: Array<strin
 				absolutePath = findFileInDirectory(absolutePath);
 				if (!absolutePath) continue; // try another option, don't terminate early
 			}
-			//return path.relative('.', absolutePath); // parcel expects path from the project root
 			return absolutePath;
 		}
 	}
