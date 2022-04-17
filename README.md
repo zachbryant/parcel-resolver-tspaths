@@ -1,6 +1,6 @@
 # parcel-resolver-tspaths
 
-Parcel does not make use of `tsconfig.json` to resolve path aliases, and instead uses `package.json` ([reference](https://v2.parceljs.org/features/module-resolution/#typescript-~-resolution)). This Parcel v2 plugin enables typescript path alias resolution as you would normally expect with webpack or otherwise. As a bonus, intellisense will continue to provide suggestions from your tsconfig.
+Parcel does not make use of `tsconfig.json` to resolve path aliases, and instead uses `package.json` ([reference](https://en.parceljs.org/module_resolution.html#typescript-~-resolution)). This Parcel v2 plugin enables typescript path alias resolution as you would normally expect with webpack or otherwise. As a bonus, intellisense will continue to provide suggestions from your tsconfig.
 
 ## Installation (~3.1kB minified, 0 dependencies)
 
@@ -12,7 +12,7 @@ Parcel does not make use of `tsconfig.json` to resolve path aliases, and instead
 
 - Ensure all parcel packages are set to minimum version `^2.0.0` and that Parcel is configured for Typescript.
 
-- In your [.parcelrc](https://v2.parceljs.org/configuration/plugin-configuration/), be sure to properly [extend the default config](https://v2.parceljs.org/configuration/plugin-configuration/#extending-configs) and add the plugin to your resolvers like so:
+- In your [.parcelrc](https://parceljs.org/features/plugins/#.parcelrc), be sure to properly [extend the default config](https://parceljs.org/features/plugins/#extending-configs) and add the plugin to your resolvers like so:
 
   ```json
   "extends": "@parcel/config-default",
@@ -25,11 +25,11 @@ Parcel does not make use of `tsconfig.json` to resolve path aliases, and instead
   },
   ```
 
-And that's it. **Note:** the order of resolvers is sequential, and I highly recommend keeping this resolver after the base resolvers.
+And that's it. **Note:** the order of resolvers is sequential, and I highly recommend keeping this resolver after the base resolvers due to parcel bugs.
 
 ## Caveats
 
-- This plugin does not support Typescript aliases while importing [non-code assets](https://v2.parceljs.org/getting-started/migration/#importing-non-code-assets-from-javascript), but this is being considered for future development.
+- This plugin does not support Typescript aliases while importing [non-code assets](https://parceljs.org/getting-started/migration/#importing-non-code-assets-from-javascript), but this is being considered for future development.
 
   For example:
 
