@@ -29,10 +29,6 @@ And that's it. **Note:** the order of resolvers is sequential, and I highly reco
 
 ## Caveats
 
-- ```Hot reloading is broken in files resolved through aliases, because Parcel's HMR implementation does not account for resolvers. You can follow this issue [here](https://github.com/parcel-bundler/parcel/issues/6235).~~~
-
-  ```
-
 - This plugin does not support Typescript aliases while importing [non-code assets](https://v2.parceljs.org/getting-started/migration/#importing-non-code-assets-from-javascript), but this is being considered for future development.
 
   For example:
