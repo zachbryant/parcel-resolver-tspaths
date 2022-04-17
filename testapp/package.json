@@ -1,0 +1,23 @@
+{
+  "name": "my-project",
+  "scripts": {
+    "start": "parcel ./src/index.html --log-level verbose",
+    "build": "parcel build ./src/index.html --log-level verbose",
+    "prebuild": "node tsconfig.js",
+    "prestart": "node tsconfig.js"
+  },
+  "dependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "@parcel/transformer-typescript-tsc": "2.0.0",
+    "@parcel/validator-typescript": "^2.0.0",
+    "@types/react": "^17.0.11",
+    "@types/react-dom": "^17.0.8",
+    "onmyjs": "^2.0.2",
+    "parcel": "2.0.0",
+    "parcel-resolver-tspaths": "../",
+    "tsconfig-paths-autogen": "^2.0.1"
+  }
+}
