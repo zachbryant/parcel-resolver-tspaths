@@ -6,7 +6,7 @@ const utils_1 = require("@parcel/utils");
 exports.fs = require('fs');
 exports.path = require('path');
 exports.default = new plugin_1.Resolver({
-    async resolve({ filePath, dependency, options, logger }) {
+    async resolve({ specifier, dependency, options, logger }) {
         checkWebpackSpecificImportSyntax(dependency);
         let resolveFrom = dependency.resolveFrom;
         const isTypescript = resolveFrom?.match(/\.tsx?$/g);
@@ -15,8 +15,10 @@ exports.default = new plugin_1.Resolver({
         }
         logger.verbose({ message: `Resolving ${resolveFrom}` });
         const pathsMap = await load(resolveFrom, options, logger);
-        const result = attemptResolve(filePath, pathsMap, logger);
+        const result = attemptResolve(specifier, pathsMap, logger);
         logger.verbose({ message: `Result: ${result}` });
+        if (!result)
+            return null;
         return {
             filePath: result,
         };
@@ -62,7 +64,8 @@ function attemptResolveArray(from, alias, realPaths) {
                 if (!absolutePath)
                     continue; // try another option, don't terminate early
             }
-            return exports.path.relative('.', absolutePath); // parcel expects path from the project root
+            //return path.relative('.', absolutePath); // parcel expects path from the project root
+            return absolutePath;
         }
     }
     return null;
@@ -73,13 +76,16 @@ async function load(resolveFrom, options, logger) {
     logger.verbose({ message: `paths loaded: ${JSON.stringify(result)}` });
     return result;
 }
-/** Populate a map with any paths from tsconfig.json starting from baseUrl */
-async function loadTsPaths(resolveFrom, options, logger) {
-    let result = await utils_1.loadConfig(options.inputFS, resolveFrom, ['tsconfig.json'], options.projectRoot);
+async function loadConfig(options, resolveFrom) {
+    let result = await utils_1.loadConfig(options.inputFS, resolveFrom, ['tsconfig.json', 'tsconfig.js'], options.projectRoot);
     if (!result?.config) {
         throw new Error(`Missing or invalid tsconfig.json in project root (${options.projectRoot})`);
     }
-    let config = result.config;
+    return result.config;
+}
+/** Populate a map with any paths from tsconfig.json starting from baseUrl */
+async function loadTsPaths(resolveFrom, options, logger) {
+    let config = await loadConfig(options, resolveFrom);
     let baseUrl = config['baseUrl'] ?? 'src';
     let tsPathsObject = config?.['compilerOptions']?.['paths'] ?? {};
     let tsPathsMap = new Map();

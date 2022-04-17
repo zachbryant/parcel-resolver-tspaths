@@ -1,10 +1,10 @@
 {
   "name": "parcel-resolver-tspaths",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Supports tsconfig paths in Parcelv2.",
-  "main": "dist/min/index.min.js",
+  "main": "dist/index.js",
   "files": [
-    "dist/min/"
+    "dist/"
   ],
   "author": "zachbryant",
   "license": "MIT",
@@ -13,7 +13,7 @@
   },
   "homepage": "https://github.com/zachbryant/parcel-resolver-tspaths#readme",
   "scripts": {
-    "test": "mocha",
+    "test": "cd ./testapp/ && npm run build",
     "clean": "rm -rf node_modules/ test/testapp/node_modules test/testapp/.parcel-cache",
     "build": "tsc && npm run minify",
     "minify": "terser --compress --mangle --comments false -o dist/min/index.min.js -- dist/index.js",
@@ -38,16 +38,16 @@
     "path"
   ],
   "engines": {
-    "parcel": "^2.0.0-beta.2",
+    "parcel": ">= 2.0.0",
     "node": ">= 14.0.0"
   },
   "peerDependencies": {
-    "parcel": "^2.0.0-beta.2"
+    "parcel": ">= 2.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.13.8",
-    "@parcel/plugin": "^2.0.0-beta.2",
-    "@parcel/utils": "^2.0.0-beta.2",
+    "@parcel/plugin": "^2.0.0",
+    "@parcel/utils": "^2.0.0",
     "@types/node": "^14.14.31",
     "beachball": "^2.4.0",
     "eslint": "^7.20.0",
@@ -58,5 +58,9 @@
     "tslint": "^6.1.3",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^4.2.2"
+  },
+  "volta": {
+    "yarn": "1.22.18",
+    "node": "16.14.2"
   }
 }
