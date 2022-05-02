@@ -2,7 +2,7 @@
 const { generatePaths } = require('tsconfig-paths-autogen');
 const { onmyjs } = require('onmyjs');
 
-const baseUrl = 'src';
+const baseUrl = 'notSrc';
 
 module.exports = {
 	compilerOptions: {

@@ -1,8 +1,8 @@
 {
   "name": "my-project",
   "scripts": {
-    "start": "parcel ./src/index.html --log-level verbose",
-    "build": "parcel build ./src/index.html --log-level verbose",
+    "start": "parcel ./notSrc/index.html --log-level verbose",
+    "build": "parcel build ./notSrc/index.html --log-level verbose",
     "prebuild": "node tsconfig.js",
     "prestart": "node tsconfig.js"
   },
@@ -19,5 +19,9 @@
     "parcel": "2.0.0",
     "parcel-resolver-tspaths": "../",
     "tsconfig-paths-autogen": "^2.0.1"
+  },
+  "volta": {
+    "yarn": "1.22.18",
+    "node": "16.14.2"
   }
 }
