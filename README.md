@@ -27,6 +27,8 @@ Parcel does not make use of `tsconfig.json` to resolve path aliases, and instead
 
 And that's it. **Note:** the order of resolvers is sequential, and I highly recommend keeping this resolver after the base resolvers due to parcel bugs.
 
+If you're lazy like me, you might be interested in my package that auto-generates your tsconfig paths as you code. You can read more about `tsconfig-paths-autogen` [here](https://www.hulu.com/watch/ae27b407-54c7-41c2-9a11-ab7a7f50089e/coviewing/90c847e0-deec-4c1c-b2b1-e515e9adfc03).
+
 ## Caveats
 
 - This plugin does not support Typescript aliases while importing [non-code assets](https://parceljs.org/getting-started/migration/#importing-non-code-assets-from-javascript), but this is being considered for future development.
@@ -38,6 +40,8 @@ And that's it. **Note:** the order of resolvers is sequential, and I highly reco
   ```
 
 - ## **Please file an issue if you notice any bugs. Thanks!**
+
+
 
 ## Development
 
