@@ -85,8 +85,12 @@ async function loadConfig(options, resolveFrom) {
 /** Populate a map with any paths from tsconfig.json starting from baseUrl */
 async function loadTsPaths(resolveFrom, options, logger) {
     let config = await loadConfig(options, resolveFrom);
-    let baseUrl = config['baseUrl'] ?? 'src';
-    let tsPathsObject = config?.['compilerOptions']?.['paths'] ?? {};
+    let compilerOptions = config?.['compilerOptions'];
+    if (!compilerOptions) {
+        logger.verbose({ message: `Couldn't find compilerOptions in tsconfig` });
+    }
+    let baseUrl = compilerOptions?.['baseUrl'] ?? 'src';
+    let tsPathsObject = compilerOptions?.['paths'] ?? {};
     let tsPathsMap = new Map();
     // Prepare map entries with baseUrl
     for (let [key, value] of Object.entries(tsPathsObject)) {
