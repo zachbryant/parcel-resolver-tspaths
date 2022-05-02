@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.trim = exports.trimSlash = exports.trimStar = exports.checkWebpackSpecificImportSyntax = exports.findFileInDirectoryUnknownExt = exports.findFileInDirectory = exports.path = exports.fs = void 0;
+exports.trim = exports.trimStar = exports.checkWebpackSpecificImportSyntax = exports.findFileInDirectoryUnknownExt = exports.findFileInDirectory = exports.path = exports.fs = void 0;
 const plugin_1 = require("@parcel/plugin");
 const utils_1 = require("@parcel/utils");
 exports.fs = require('fs');
@@ -25,21 +25,27 @@ exports.default = new plugin_1.Resolver({
     },
 });
 function attemptResolve(from, pathsMap, logger) {
-    if (from in pathsMap)
-        return pathsMap.get(from);
+    if (from in pathsMap) {
+        return resolveByType(from, from, pathsMap[from]);
+    }
     for (let alias of Object.keys(pathsMap)) {
         const aliasRegex = new RegExp(`^${alias.replace('*', '.*')}$`, 'g');
         if (from.match(aliasRegex)) {
             let value = pathsMap[alias];
-            switch (value.constructor) {
-                case String:
-                    return value;
-                case Array:
-                    return attemptResolveArray(from, alias, value);
-            }
+            return resolveByType(from, alias, value);
         }
     }
     return null;
+}
+function resolveByType(from, alias, value) {
+    if (!value)
+        return null;
+    switch (value.constructor) {
+        case String:
+            return value;
+        case Array:
+            return attemptResolveArray(from, alias, value);
+    }
 }
 // TODO support resource loaders like 'url:@alias/my.svg'
 /** Attempt to resolve any path associated with the alias to a file or directory index */
@@ -87,7 +93,7 @@ async function loadTsPaths(resolveFrom, options, logger) {
     let config = await loadConfig(options, resolveFrom);
     let compilerOptions = config?.['compilerOptions'];
     if (!compilerOptions) {
-        logger.verbose({ message: `Couldn't find compilerOptions in tsconfig` });
+        throw new Error(`Couldn't find compilerOptions in tsconfig`);
     }
     let baseUrl = compilerOptions?.['baseUrl'] ?? 'src';
     let tsPathsObject = compilerOptions?.['paths'] ?? {};
@@ -146,10 +152,6 @@ function trimStar(str) {
     return trim(str, '*');
 }
 exports.trimStar = trimStar;
-function trimSlash(str) {
-    return trim(str, exports.path.sep);
-}
-exports.trimSlash = trimSlash;
 function trim(str, trim) {
     if (str.endsWith(trim)) {
         str = str.substring(0, str.length - trim.length);

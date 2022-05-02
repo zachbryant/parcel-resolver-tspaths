@@ -27,23 +27,30 @@ export default new Resolver({
 	},
 });
 
-function attemptResolve(from: string, pathsMap: PathMapType, logger) {
-	if (from in pathsMap) return pathsMap.get(from);
+function attemptResolve(from: string, pathsMap: PathMapType, logger): string | undefined {
+	if (from in pathsMap) {
+		return resolveByType(from, from, pathsMap[from]);
+	}
 
 	for (let alias of Object.keys(pathsMap)) {
 		const aliasRegex = new RegExp(`^${alias.replace('*', '.*')}$`, 'g');
 		if (from.match(aliasRegex)) {
 			let value = pathsMap[alias];
-			switch (value.constructor) {
-				case String:
-					return value;
-				case Array:
-					return attemptResolveArray(from, alias, value);
-			}
+			return resolveByType(from, alias, value);
 		}
 	}
 
 	return null;
+}
+
+function resolveByType(from: string, alias: string, value: string | string[]): string {
+	if (!value) return null;
+	switch (value.constructor) {
+		case String:
+			return value as string;
+		case Array:
+			return attemptResolveArray(from, alias, value as string[]);
+	}
 }
 
 // TODO support resource loaders like 'url:@alias/my.svg'
@@ -100,7 +107,7 @@ async function loadTsPaths(resolveFrom: string, options, logger): Promise<PathMa
 	let config = await loadConfig(options, resolveFrom);
 	let compilerOptions = config?.['compilerOptions'];
 	if (!compilerOptions) {
-		logger.verbose({ message: `Couldn't find compilerOptions in tsconfig` });
+		throw new Error(`Couldn't find compilerOptions in tsconfig`);
 	}
 	let baseUrl = compilerOptions?.['baseUrl'] ?? 'src';
 	let tsPathsObject = compilerOptions?.['paths'] ?? {};
@@ -166,10 +173,6 @@ export function checkWebpackSpecificImportSyntax(dependency) {
 
 export function trimStar(str: string) {
 	return trim(str, '*');
-}
-
-export function trimSlash(str: string) {
-	return trim(str, path.sep);
 }
 
 export function trim(str: string, trim: string) {
