@@ -89,17 +89,30 @@ async function load(resolveFrom: string, options, logger): Promise<PathMapType> 
 	return result;
 }
 
-async function loadConfig(options, resolveFrom) {
+async function loadConfigByName(names, options, resolveFrom) {
 	let result = await loadConfigUtil(
 		options.inputFS,
 		resolveFrom,
-		['tsconfig.json', 'tsconfig.js'],
+		names,
 		options.projectRoot
 	);
 	if (!result?.config) {
-		throw new Error(`Missing or invalid tsconfig.json in project root (${options.projectRoot})`);
+		throw new Error(`Missing or invalid ${names.join(',')} in project root (${options.projectRoot})`);
 	}
 	return result.config;
+}
+
+async function loadConfig(options, resolveFrom) {
+	let baseConfig = await loadConfigByName(['tsconfig.json', 'tsconfig.js'], options, resolveFrom)
+	if (!baseConfig.extends) {
+		return baseConfig
+	}
+	let extendsConfig = await loadConfigByName([baseConfig.extends], options, resolveFrom)
+
+	return {
+		...baseConfig,
+		...extendsConfig
+	}
 }
 
 /** Populate a map with any paths from tsconfig.json starting from baseUrl */
