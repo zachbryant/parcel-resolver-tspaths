@@ -102,23 +102,21 @@ async function loadConfigByName(names, options, resolveFrom) {
 	return result.config;
 }
 
-async function loadConfig(options, resolveFrom) {
+async function loadCompilerOptions(options, resolveFrom) {
 	let baseConfig = await loadConfigByName(['tsconfig.json', 'tsconfig.js'], options, resolveFrom)
 	if (!baseConfig.extends) {
-		return baseConfig
+		return baseConfig.compilerOptions
 	}
 	let extendsConfig = await loadConfigByName([baseConfig.extends], options, resolveFrom)
-
-	return {
-		...baseConfig,
-		...extendsConfig
-	}
+	return extendsConfig?.compilerOptions || baseConfig?.compilerOptions ? {
+		...baseConfig?.compilerOptions,
+		...extendsConfig?.compilerOptions
+	} : null
 }
 
 /** Populate a map with any paths from tsconfig.json starting from baseUrl */
 async function loadTsPaths(resolveFrom: string, options, logger): Promise<PathMapType> {
-	let config = await loadConfig(options, resolveFrom);
-	let compilerOptions = config?.['compilerOptions'];
+	let compilerOptions = await loadCompilerOptions(options, resolveFrom);
 	if (!compilerOptions) {
 		throw new Error(`Couldn't find compilerOptions in tsconfig`);
 	}
